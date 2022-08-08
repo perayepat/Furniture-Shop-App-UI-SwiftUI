@@ -64,9 +64,24 @@ struct ContentView: View {
                         }
                         .padding(.leading)
                     }
+                    .padding(.bottom,100)
                     
                 }
             }
+            
+            //MARK: - Custom NavBar
+            HStack{
+                BottomNavBarItem(image: Image("Home"), action: {})
+                BottomNavBarItem(image: Image("fav"), action: {})
+                BottomNavBarItem(image: Image("shop"), action: {})
+                BottomNavBarItem(image: Image("User"), action: {})
+            }
+            .padding()
+            .background(Color.white)
+            .clipShape(Capsule())
+            .padding()
+            .shadow(color: Color.black.opacity(0.15), radius: 8, x: 2, y: 6)
+            .frame(maxHeight: .infinity, alignment: .bottom)
             
         }
         
@@ -173,5 +188,21 @@ struct ProductCardView: View {
         .padding()
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 20))
+    }
+}
+
+struct BottomNavBarItem: View {
+    let image: Image
+    let action: ()-> Void
+    var body: some View {
+        
+        Button(action: action) {
+            image
+                .resizable()
+                .frame(width: 20, height: 20)
+                .frame(maxWidth: .infinity)
+                .foregroundColor(Color("Primary"))
+        }
+
     }
 }
