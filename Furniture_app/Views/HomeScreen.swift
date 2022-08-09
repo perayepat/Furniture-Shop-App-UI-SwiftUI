@@ -11,77 +11,88 @@ struct HomeScreen: View{
     @State private var selectedIndex: Int = 0
     private let categories = ["All","Chair", "Sofa", "Lamp", "Kitchen", "Table"]
     var body: some View{
-        ZStack {
-            //MARK: - Background Color
-            Color("Bg")
-                .edgesIgnoringSafeArea(.all)
-            
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading){
-                    TopMenuBarView()
-                    TagLineView()
-                        .padding()
-                    SearchAndScanView()
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack{
-                            ForEach(0 ..< categories.count){ i in
-                                //Based on the index it will be equal to active
-                                CategoryView(isActive: i == selectedIndex, text: categories[i])
-                                    .onTapGesture {
-                                        selectedIndex = i
-                                    }
-                                    .animation(.easeInOut, value: selectedIndex)
+        NavigationView {
+            ZStack {
+                //MARK: - Background Color
+                Color("Bg")
+                    .edgesIgnoringSafeArea(.all)
+                
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(alignment: .leading){
+                        TopMenuBarView()
+                        TagLineView()
+                            .padding()
+                        SearchAndScanView()
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack{
+                                ForEach(0 ..< categories.count){ i in
+                                    //Based on the index it will be equal to active
+                                    CategoryView(isActive: i == selectedIndex, text: categories[i])
+                                        .onTapGesture {
+                                            selectedIndex = i
+                                        }
+                                        .animation(.easeInOut, value: selectedIndex)
+                                }
                             }
+                            .padding()
                         }
-                        .padding()
-                    }
-                    Text("Popular")
-                        .font(.custom("PlayfairDisplay-Bold", size: 24))
-                        .padding(.horizontal)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(0 ..< 4) { index in
-                                ProductCardView(image: Image("chair_\(index + 1)"), size: 210)
+                        Text("Popular")
+                            .font(.custom("PlayfairDisplay-Bold", size: 24))
+                            .padding(.horizontal)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(0 ..< 4) { index in
+                                    NavigationLink(destination: ProductDetailView(), label: {
+                                        ProductCardView(image: Image("chair_\(index + 1)"), size: 210)
+                                    })
+                                    .navigationBarHidden(true)
+                                    .foregroundColor(.black)
+                                }
+                                .padding(.trailing)
                             }
-                            .padding(.trailing)
+                            .padding(.leading)
                         }
-                        .padding(.leading)
-                    }
-                    
-                    Text("Best")
-                        .font(.custom("PlayfairDisplay-Bold", size: 24))
-                        .padding(.horizontal)
-                        .padding(.top)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(0 ..< 4) { index in
-                                ProductCardView(image: Image("chair_\(index + 1)"), size: 180)
+                        
+                        Text("Best")
+                            .font(.custom("PlayfairDisplay-Bold", size: 24))
+                            .padding(.horizontal)
+                            .padding(.top)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(0 ..< 4) { index in
+                                    NavigationLink(destination: ProductDetailView(), label: {
+                                        ProductCardView(image: Image("chair_\(index + 1)"), size: 180)
+                                    })
+                                    .foregroundColor(.black)
+
+                                }
+                                .padding(.trailing)
                             }
-                            .padding(.trailing)
+                            .padding(.leading)
                         }
-                        .padding(.leading)
+                        .padding(.bottom,100)
+                        
                     }
-                    .padding(.bottom,100)
-                    
                 }
+                
+                //MARK: - Custom NavBar
+                HStack{
+                    BottomNavBarItem(image: Image("Home"), action: {})
+                    BottomNavBarItem(image: Image("fav"), action: {})
+                    BottomNavBarItem(image: Image("shop"), action: {})
+                    BottomNavBarItem(image: Image("User"), action: {})
+                }
+                .padding()
+                .background(Color.white)
+                .clipShape(Capsule())
+                .padding()
+                .shadow(color: Color.black.opacity(0.15), radius: 8, x: 2, y: 6)
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                
             }
-            
-            //MARK: - Custom NavBar
-            HStack{
-                BottomNavBarItem(image: Image("Home"), action: {})
-                BottomNavBarItem(image: Image("fav"), action: {})
-                BottomNavBarItem(image: Image("shop"), action: {})
-                BottomNavBarItem(image: Image("User"), action: {})
-            }
-            .padding()
-            .background(Color.white)
-            .clipShape(Capsule())
-            .padding()
-            .shadow(color: Color.black.opacity(0.15), radius: 8, x: 2, y: 6)
-            .frame(maxHeight: .infinity, alignment: .bottom)
             
         }
     }
